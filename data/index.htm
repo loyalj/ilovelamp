@@ -1,0 +1,54 @@
+<!doctype html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+
+        <title>iLoveLamp</title>
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+        <script type="text/javascript" src="jqColorPicker.min.js"></script>
+
+        <!--link rel="stylesheet" href="css/styles.css?v=1.0"-->
+
+        <!--[if lt IE 9]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+        <h1>iLoveLamp</h1>
+        <div class="input-toggles">
+            <input type="checkbox" id="rgbw" value="Bike">Convert to RGBW<br>
+            <input class="color no-alpha" value="rgb(162, 63, 3)" /><br>
+        </div>
+
+        <script type="text/javascript">
+
+            function onChangeColor(colors) {
+                var red = Math.floor(1024*colors.rgb.r);
+                var green = Math.floor(1024*colors.rgb.g);
+                var blue = Math.floor(1024*colors.rgb.b);
+
+                var url = '/rgb';
+                if($('#rgbw').is(':checked')) {
+                    url = '/rgbw'
+                }
+                $.get( url, {red:red, green:green, blue:blue});
+            }
+
+            $( "#rgbw" ).change(function() {
+                var colors = window.myColorPicker.colorPicker.color.colors;
+                onChangeColor(colors);
+            });
+
+            window.myColorPicker = $('.color').colorPicker({
+                 renderCallback: function($elm, toggled) {
+                    var colors = this.color.colors;
+                    onChangeColor(colors);
+                }
+            });
+        </script>
+    </body>
+</html>
